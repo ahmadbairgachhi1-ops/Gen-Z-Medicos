@@ -2,43 +2,75 @@ import streamlit as st
 import os
 from pypdf import PdfWriter
 
-st.set_page_config(page_title="Paper Hub", page_icon="📚")
-st.title("📚 University Paper Downloader")
+st.set_page_config(page_title="B.Pharm Paper Hub", page_icon="💊")
+st.title("💊 B.Pharm Previous Year Papers")
 
-# --- SUBJECTS KI LIST ---
-# भाई, यहाँ उन सब्जेक्ट्स के नाम लिखो जो आपके पास हैं
-subjects = ["Pharmacology", "MedicinalChemistry", "Analysis"]
-years = ["2020", "2021", "2022", "2023", "2024"]
+# --- 1. SUBJECTS KI LIST (Naye Subject) ---
+subjects = [
+    "Pharmaceutical_Engineering",
+    "Pharmaceutical_Microbiology",
+    "Physical_Pharmaceutics_I",
+    "Pharmaceutical_Organic_Chemistry_II"
+]
 
-st.write("Apna Subject aur Year select karo 👇")
+# --- 2. YEARS KI LIST (Month aur Year ke saath) ---
+# Dhyan rahe: Filename me bhi same spelling aur underscore hona chahiye
+years = [
+    "November_2020",
+    "May_2021",
+    "November_2021",
+    "May_2022",
+    "November_2022",
+    "May_2023",
+    "November_2023",
+    "May_2024",
+    "November_2024",
+    "May_2025",
+    "November_2025"
+]
+
+st.write("Apna Subject aur Exam Session select karein 👇")
 
 # --- SELECTION ---
-selected_sub = st.multiselect("Subjects:", subjects)
-selected_years = st.multiselect("Years:", years)
+selected_sub = st.multiselect("Select Subjects:", subjects)
+selected_years = st.multiselect("Select Session (Year):", years)
 
 # --- MERGE BUTTON ---
 if st.button("Generate Combined PDF"):
     if not selected_sub or not selected_years:
-        st.error("Pehle Subject aur Year select to karo bhai!")
+        st.error("Please select at least one Subject and one Session!")
     else:
         merger = PdfWriter()
-        count = 0
+        found_count = 0
+        missing_files = []
         
         # Files dhundhna
         for sub in selected_sub:
             for yr in selected_years:
+                # File ka naam banaya ja raha hai
                 filename = f"{sub}_{yr}.pdf"
+                
                 if os.path.exists(filename):
                     merger.append(filename)
-                    count += 1
+                    found_count += 1
+                else:
+                    missing_files.append(filename)
         
-        # Download
-        if count > 0:
-            merger.write("Result.pdf")
+        # Download Section
+        if found_count > 0:
+            output_filename = "Combined_Papers.pdf"
+            merger.write(output_filename)
             merger.close()
             
-            with open("Result.pdf", "rb") as f:
-                st.success(f"Badhai ho! {count} papers mil gaye.")
-                st.download_button("📥 Download PDF", f, "Combined_Papers.pdf")
+            with open(output_filename, "rb") as f:
+                st.success(f"Success! {found_count} papers merged. 🎉")
+                st.download_button("📥 Download Combined PDF", f, "My_University_Papers.pdf")
+            
+            # Agar koi file nahi mili, toh user ko batao
+            if missing_files:
+                st.warning(f"Note: Ye files nahi mili: {missing_files}")
+                
         else:
-            st.error("Koi file nahi mili. Naam check karo (Example: Pharmacology_2023.pdf)")
+            st.error("❌ Koi bhi file match nahi hui. Please check filenames in GitHub.")
+            st.write("Expected filename example: Pharmaceutical_Engineering_November_2020.pdf")
+
