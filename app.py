@@ -10,7 +10,8 @@ subjects = [
     "Pharmaceutical_Engineering",
     "Pharmaceutical_Microbiology",
     "Physical_Pharmaceutics_I",
-    "Pharmaceutical_Organic_Chemistry_II"
+    "Pharmaceutical_Organic_Chemistry_II”, 
+    " HAP_2"
 ]
 
 # --- 2. YEARS KI LIST (Month aur Year ke saath) ---
