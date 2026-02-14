@@ -2,20 +2,24 @@ import streamlit as st
 import os
 from pypdf import PdfWriter
 
+# --- PAGE SETUP ---
 st.set_page_config(page_title="B.Pharm Paper Hub", page_icon="💊")
 st.title("💊 B.Pharm Previous Year Papers")
 
-# --- 1. SUBJECTS KI LIST (Naye Subject) ---
+# --- 1. SUBJECTS KI LIST (Updated) ---
+# Dhyan rahe: File ka naam bilkul yahi hona chahiye jo yahan likha hai
 subjects = [
     "Pharmaceutical_Engineering",
     "Pharmaceutical_Microbiology",
     "Physical_Pharmaceutics_I",
-    "Pharmaceutical_Organic_Chemistry_II”, 
-    "HAP_2"
+    "Pharmaceutical_Organic_Chemistry_II",
+    "Pharmaceutical_Organic_Chemistry_I",
+    "HAP_II",
+    "Biochemistry",
+    "Pathophysiology"
 ]
 
 # --- 2. YEARS KI LIST (Month aur Year ke saath) ---
-# Dhyan rahe: Filename me bhi same spelling aur underscore hona chahiye
 years = [
     "November_2020",
     "May_2021",
@@ -45,19 +49,20 @@ if st.button("Generate Combined PDF"):
         found_count = 0
         missing_files = []
         
-        # Files dhundhna
+        # Files dhundhna aur merge karna
         for sub in selected_sub:
             for yr in selected_years:
-                # File ka naam banaya ja raha hai
+                # Filename pattern: Subject_Month_Year.pdf
                 filename = f"{sub}_{yr}.pdf"
                 
                 if os.path.exists(filename):
                     merger.append(filename)
                     found_count += 1
                 else:
+                    # Agar file nahi mili to list me daal do
                     missing_files.append(filename)
         
-        # Download Section
+        # --- DOWNLOAD SECTION ---
         if found_count > 0:
             output_filename = "Combined_Papers.pdf"
             merger.write(output_filename)
@@ -67,11 +72,11 @@ if st.button("Generate Combined PDF"):
                 st.success(f"Success! {found_count} papers merged. 🎉")
                 st.download_button("📥 Download Combined PDF", f, "My_University_Papers.pdf")
             
-            # Agar koi file nahi mili, toh user ko batao
+            # Agar kuch files nahi mili thi, to user ko batao
             if missing_files:
-                st.warning(f"Note: Ye files nahi mili: {missing_files}")
+                st.warning(f"Note: Ye files upload nahi hain: {missing_files}")
                 
         else:
-            st.error("❌ Koi bhi file match nahi hui. Please check filenames in GitHub.")
-            st.write("Expected filename example: Pharmaceutical_Engineering_November_2020.pdf")
+            st.error("❌ Koi bhi file nahi mili. Please GitHub par filenames check karein.")
+            st.info("Expected Example: HAP_II_May_2023.pdf")
 
