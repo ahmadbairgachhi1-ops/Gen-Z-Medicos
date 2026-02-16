@@ -1,7 +1,7 @@
 [theme]
-primaryColor = "#D4AF37"         # Gold (Buton ka rang)
-backgroundColor = "#0F2027"      # Deep Blue/Black (Raat ka rang)
-secondaryBackgroundColor = "#203A43" # Sidebar ka rang (Thoda halka)
-textColor = "#FFFFFF"            # White (Likha hua saaf dikhega)
+primaryColor = "#1B5E20"         # Dark Green (Button)
+backgroundColor = "#FDFBF7"      # Cream White (Background)
+secondaryBackgroundColor = "#E8F5E9" # Light Green (Sidebar)
+textColor = "#1B5E20"            # Dark Green (Text)
 font = "sans serif"
-
+ 
