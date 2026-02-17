@@ -2,11 +2,11 @@ import streamlit as st
 import os
 from pypdf import PdfWriter
 
-# --- PAGE CONFIGURATION (Professional & Clean) ---
-st.set_page_config(page_title="RGUHS B.Pharm PYQs", page_icon="📚", layout="centered")
+# --- PAGE CONFIGURATION ---
+st.set_page_config(page_title="RGUHS B.Pharm PYQs", page_icon="💊", layout="centered")
 
-# --- TITLE ---
-st.title("RGUHS B.Pharm PYQs")
+# --- TITLE WITH EMOJI ---
+st.title("💊 RGUHS B.Pharm PYQs")
 st.write("Select your Semester, Subjects, and Year to download the combined PDF.")
 
 # --- DATA: SEMESTER & SUBJECTS MAPPING ---
@@ -29,7 +29,7 @@ semester_data = {
         "Pharmaceutical_Engineering",
         "Pharmaceutical_Organic_Chemistry_II"
     ],
-    # Semesters 4 to 8 (Currently Not Available)
+    # Semesters 4 to 8 (Not Available)
     "Semester 4": ["Not Available"],
     "Semester 5": ["Not Available"],
     "Semester 6": ["Not Available"],
@@ -37,26 +37,26 @@ semester_data = {
     "Semester 8": ["Not Available"]
 }
 
-# --- DATA: YEARS LIST ---
+# --- DATA: YEARS LIST (DECREASING ORDER: 2025 -> 2020) ---
 years_list = [
-    "November_2020",
-    "May_2021",
-    "November_2021",
-    "May_2022",
-    "November_2022",
-    "May_2023",
-    "November_2023",
-    "May_2024",
-    "November_2024",
+    "November_2025",
     "May_2025",
-    "November_2025"
+    "November_2024",
+    "May_2024",
+    "November_2023",
+    "May_2023",
+    "November_2022",
+    "May_2022",
+    "November_2021",
+    "May_2021",
+    "November_2020"
 ]
 
 # --- 1. SEMESTER SELECTION (Box 1) ---
 selected_semester = st.selectbox("Select Semester:", list(semester_data.keys()))
 
 # --- 2. SUBJECT SELECTION (Box 2 - Dynamic) ---
-# This list updates automatically based on the selected semester
+# Semester ke hisab se subject list update hogi
 current_subjects = semester_data[selected_semester]
 selected_subjects = st.multiselect("Select Subjects:", current_subjects)
 
@@ -104,10 +104,9 @@ if st.button("Generate Combined PDF"):
                     mime="application/pdf"
                 )
             
-            # Show missing files warning if any
+            # Missing files warning
             if missing_files:
                 st.warning(f"Note: The following files were not found: {missing_files}")
         else:
             st.error("No files found matching your selection.")
-            st.info("Please ensure the files are uploaded to GitHub with the correct names.")
-
+            st.info("Please ensure filenames match format: Subject_Month_Year.pdf")
