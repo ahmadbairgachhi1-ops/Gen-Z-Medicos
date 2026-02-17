@@ -2,56 +2,43 @@ import streamlit as st
 import os
 from pypdf import PdfWriter
 
-# --- 1. PAGE SETUP ---
-st.set_page_config(page_title="Sci-Fi Paper Hub", page_icon="🚀", layout="centered")
+# --- PAGE CONFIGURATION (Professional & Clean) ---
+st.set_page_config(page_title="RGUHS B.Pharm PYQs", page_icon="📚", layout="centered")
 
-# --- 2. SCI-FI ANIMATION & STYLE (CSS) ---
-# Ye code background me chalne wala video/GIF lagayega
-page_bg_img = """
-<style>
-[data-testid="stAppViewContainer"] {
-    background-image: url("https://i.giphy.com/media/U3qYN8S0j3bpK/giphy.gif");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+# --- TITLE ---
+st.title("RGUHS B.Pharm PYQs")
+st.write("Select your Semester, Subjects, and Year to download the combined PDF.")
+
+# --- DATA: SEMESTER & SUBJECTS MAPPING ---
+semester_data = {
+    "Semester 1": [
+        "Pharmaceutical_Analysis_I",
+        "Pharmaceutics_I",
+        "HAP_I",
+        "Pharmaceutical_Inorganic_Chemistry"
+    ],
+    "Semester 2": [
+        "Pathophysiology",
+        "Pharmaceutical_Organic_Chemistry_I",
+        "Biochemistry",
+        "HAP_II"
+    ],
+    "Semester 3": [
+        "Pharmaceutical_Microbiology",
+        "Physical_Pharmaceutics_I",
+        "Pharmaceutical_Engineering",
+        "Pharmaceutical_Organic_Chemistry_II"
+    ],
+    # Semesters 4 to 8 (Currently Not Available)
+    "Semester 4": ["Not Available"],
+    "Semester 5": ["Not Available"],
+    "Semester 6": ["Not Available"],
+    "Semester 7": ["Not Available"],
+    "Semester 8": ["Not Available"]
 }
 
-[data-testid="stHeader"] {
-    background-color: rgba(0,0,0,0);
-}
-
-/* Text ko white color dena taki dark background pe dikhe */
-h1, h2, h3, p, div, span, label {
-    color: #FFFFFF !important;
-    text-shadow: 2px 2px 4px #000000;
-}
-.stMultiSelect div div {
-    background-color: rgba(0, 0, 0, 0.5); /* Dropdown ko thoda transparent kala rang */
-    color: white;
-}
-</style>
-"""
-st.markdown(page_bg_img, unsafe_allow_html=True)
-
-# --- 3. TITLE ---
-st.title("🚀 B.Pharm Paper Hub (Sci-Fi Edition)")
-st.write("Apna Subject aur Session select karein 👇")
-
-# --- 4. SUBJECTS LIST (Aapki purani list) ---
-subjects = [
-    "Pharmaceutical_Engineering",
-    "Pharmaceutical_Microbiology",
-    "Physical_Pharmaceutics_I",
-    "Pharmaceutical_Organic_Chemistry_II",
-    "Pharmaceutical_Organic_Chemistry_I",
-    "HAP_II",
-    "Biochemistry",
-    "Pathophysiology"
-]
-
-# --- 5. YEARS LIST (Aapki purani list) ---
-years = [
+# --- DATA: YEARS LIST ---
+years_list = [
     "November_2020",
     "May_2021",
     "November_2021",
@@ -65,22 +52,35 @@ years = [
     "November_2025"
 ]
 
-# --- 6. SELECTION BOXES ---
-selected_sub = st.multiselect("Select Subjects (Subject chunein):", subjects)
-selected_years = st.multiselect("Select Session (Saal chunein):", years)
+# --- 1. SEMESTER SELECTION (Box 1) ---
+selected_semester = st.selectbox("Select Semester:", list(semester_data.keys()))
 
-# --- 7. MERGE LOGIC ---
-if st.button("🧬 Generate Combined PDF"):
-    if not selected_sub or not selected_years:
-        st.error("⚠️ Please select at least one Subject and one Session!")
+# --- 2. SUBJECT SELECTION (Box 2 - Dynamic) ---
+# This list updates automatically based on the selected semester
+current_subjects = semester_data[selected_semester]
+selected_subjects = st.multiselect("Select Subjects:", current_subjects)
+
+# --- 3. YEAR SELECTION (Box 3) ---
+selected_years = st.multiselect("Select Year:", years_list)
+
+# --- GENERATE PDF BUTTON ---
+if st.button("Generate Combined PDF"):
+    # Validation Logic
+    if "Not Available" in selected_subjects:
+        st.error("Subjects for this semester are not available yet.")
+    elif not selected_subjects:
+        st.error("Please select at least one Subject.")
+    elif not selected_years:
+        st.error("Please select at least one Year.")
     else:
         merger = PdfWriter()
         found_count = 0
         missing_files = []
-        
-        # Files dhundhna
-        for sub in selected_sub:
+
+        # Processing Files
+        for sub in selected_subjects:
             for yr in selected_years:
+                # Filename Format: Subject_Month_Year.pdf
                 filename = f"{sub}_{yr}.pdf"
                 
                 if os.path.exists(filename):
@@ -96,13 +96,18 @@ if st.button("🧬 Generate Combined PDF"):
             merger.close()
             
             with open(output_filename, "rb") as f:
-                st.success(f"✅ Mission Successful! {found_count} papers merged.")
-                st.download_button("📥 Download Combined PDF", f, "My_University_Papers.pdf")
+                st.success(f"Success! {found_count} papers merged.")
+                st.download_button(
+                    label="Download Combined PDF",
+                    data=f,
+                    file_name="RGUHS_Combined_Papers.pdf",
+                    mime="application/pdf"
+                )
             
+            # Show missing files warning if any
             if missing_files:
-                st.warning(f"⚠️ Ye files database me nahi mili: {missing_files}")
-                
+                st.warning(f"Note: The following files were not found: {missing_files}")
         else:
-            st.error("❌ Error: Files not found.")
-            st.info("Ensure filenames match format: Subject_Month_Year.pdf")
+            st.error("No files found matching your selection.")
+            st.info("Please ensure the files are uploaded to GitHub with the correct names.")
 
