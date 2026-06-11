@@ -29,8 +29,15 @@ semester_data = {
         "Pharmaceutical_Engineering",
         "Pharmaceutical_Organic_Chemistry_II"
     ],
-    # Semesters 4 to 8 (Not Available)
-    "Semester 4": ["Not Available"],
+    # --- SEMESTER 4 ADDED HERE ---
+    "Semester 4": [
+        "Pharmaceutical_Organic_Chemistry_III",
+        "Medicinal_Chemistry_I",
+        "Physical_Pharmaceutics_II",
+        "Pharmacology_I",
+        "Pharmacognosy_I"
+    ],
+    # Semesters 5 to 8 (Not Available)
     "Semester 5": ["Not Available"],
     "Semester 6": ["Not Available"],
     "Semester 7": ["Not Available"],
