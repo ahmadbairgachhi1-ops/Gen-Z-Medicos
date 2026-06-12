@@ -152,3 +152,4 @@ if st.button("🐾 Generate Combined PDF"):
         else:
             st.error("No matching files found in the database. 🐾")
             st.info("Ensure filenames match format: Subject_Month_Year.pdf")
+
