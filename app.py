@@ -5,12 +5,12 @@ from pypdf import PdfWriter
 # --- PAGE CONFIGURATION ---
 st.set_page_config(page_title="RGUHS B.Pharm PYQs", page_icon="🇮🇳", layout="centered")
 
-# --- LOCAL GITHUB IMAGE BACKGROUND & STYLE (CSS) ---
-# Yahan background me aapki upload ki hui "72280_2.jpg" file ko seedhe use kiya gaya hai
+# --- FIXED IMAGE BACKGROUND & STYLE (CSS) ---
+# Isme aapke GitHub ka direct raw link use kiya hai taaki flag image 100% load ho
 flag_theme_css = """
 <style>
 [data-testid="stAppViewContainer"] {
-    background-image: url("raw/main/72280_2.jpg");
+    background-image: url("https://raw.githubusercontent.com/ahmadbairgachhi1-ops/Gen-Z-Medicos/main/72280_2.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -21,14 +21,14 @@ flag_theme_css = """
     background-color: rgba(0,0,0,0);
 }
 
-/* Text styles for clean and bold layout */
+/* Text styles for clean and bold layout over the flag background */
 h1, h2, h3, p, span, label, div {
     color: #000000 !important; 
     font-weight: bold !important;
     text-shadow: 1px 1px 2px #FFFFFF; 
 }
 
-/* Navy Blue Button */
+/* Navy Blue Button styled professionally */
 .stButton>button {
     background-color: #000080 !important;
     color: #ffffff !important;
