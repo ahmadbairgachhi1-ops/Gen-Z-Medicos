@@ -21,14 +21,14 @@ tricolor_theme_css = """
     background-color: rgba(0,0,0,0);
 }
 
-/* Text styles over the background */
+/* Base Text settings */
 h1, h2, h3, p, span, label, div {
     color: #000000 !important; 
     font-weight: bold !important;
     text-shadow: 1px 1px 2px #FFFFFF; 
 }
 
-/* 2. Saffron Color for Semester Selection Box (1st Box) */
+/* 2. FIRST BOX (Semester Selectbox) -> SAFFRON */
 div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {
     background-color: #FF9933 !important; /* Saffron */
     border: 2px solid #FF9933 !important;
@@ -36,42 +36,52 @@ div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {
     border-radius: 6px;
 }
 
-/* 3. White Color for Subject Selection Box (2nd Box) */
-div[data-testid="stMultiSelect"]:nth-of-type(1) div[data-baseweb="select"] > div {
-    background-color: #FFFFFF !important; /* Pure White */
-    border: 2px solid #E0E0E0 !important;
-    color: #000000 !important;
-    border-radius: 6px;
+/* 3. SECOND BOX (Subject Multiselect) -> WHITE & Selected items Navy Blue */
+div[data-testid="stMultiSelect"] {
+    background-color: rgba(255, 255, 255, 0.9) !important; /* Semi-transparent White Box */
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #E0E0E0;
+}
+/* Selected items inside ALL boxes ko clean look dena */
+div[data-testid="stMultiSelect"] span[data-baseweb="tag"] {
+    background-color: #000080 !important; /* Navy Blue tags like Ashok Chakra */
+    color: #FFFFFF !important;
+}
+div[data-testid="stMultiSelect"] span[data-baseweb="tag"] span {
+    color: #FFFFFF !important;
 }
 
-/* 4. Green Color for Year Selection Box (3rd Box) */
-div[data-testid="stMultiSelect"]:nth-of-type(2) div[data-baseweb="select"] > div {
-    background-color: #138808 !important; /* India Green */
-    border: 2px solid #138808 !important;
-    color: #FFFFFF !important; /* White text for readability over green */
-    border-radius: 6px;
+/* 4. THIRD BOX (Year Multiselect) -> GREEN */
+/* Is trick se hum content ke hisab se specifically 3rd box ko target kar rahe hain */
+div[data-testid="stMultiSelect"]:has(label:contains("Year")) {
+    background-color: rgba(19, 136, 8, 0.9) !important; /* Pure India Green Box */
+    border-radius: 8px;
+    padding: 10px;
 }
-/* Year box ke andar ke selected items ka text color fix karne ke liye */
-div[data-testid="stMultiSelect"]:nth-of-type(2) span {
+/* Year box ke labels ko alag se handle karna */
+div[data-testid="stMultiSelect"]:has(label:contains("Year")) label {
     color: #000000 !important;
 }
 
-# --- 5. ROUND WHITE BUTTON WITH NAVY BLUE BORDER & TEXT ---
+/* 5. ROUND WHITE BUTTON WITH NAVY BLUE BORDER */
 .stButton>button {
-    background-color: #FFFFFF !important; /* Round White Button */
-    color: #000080 !important; /* Navy Blue Text like Ashok Chakra */
-    border-radius: 30px !important; /* Completely Rounded Edges */
-    border: 3px solid #000080 !important; /* Thick Navy Blue Border */
+    background-color: #FFFFFF !important; 
+    color: #000080 !important; /* Navy Blue text */
+    border-radius: 30px !important; /* Gol Button */
+    border: 3px solid #000080 !important; /* Ashok Chakra Blue Border */
     font-weight: bold !important;
-    padding: 10px 24px !important;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 12px 30px !important;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
+    width: auto;
 }
 
 /* Button hover effect */
 .stButton>button:hover {
-    background-color: #000080 !important; /* Navy Blue on Hover */
-    color: #FFFFFF !important; /* White Text on Hover */
+    background-color: #000080 !important; 
+    color: #FFFFFF !important; 
 }
 </style>
 """
@@ -129,17 +139,17 @@ years_list = [
     "November_2020"
 ]
 
-# --- 1. SEMESTER SELECTION (Box 1 - Saffron) ---
+# --- 1. SEMESTER SELECTION (Saffron) ---
 selected_semester = st.selectbox("Select Semester:", list(semester_data.keys()))
 
-# --- 2. SUBJECT SELECTION (Box 2 - White) ---
+# --- 2. SUBJECT SELECTION (White Box Container) ---
 current_subjects = semester_data[selected_semester]
 selected_subjects = st.multiselect("Select Subjects:", current_subjects)
 
-# --- 3. YEAR SELECTION (Box 3 - Green) ---
+# --- 3. YEAR SELECTION (Green Box Container) ---
 selected_years = st.multiselect("Select Year:", years_list)
 
-# --- GENERATE PDF BUTTON (Round White) ---
+# --- GENERATE PDF BUTTON ---
 if st.button("Generate Combined PDF"):
     if "Not Available" in selected_subjects:
         st.error("Subjects for this semester are not available yet.")
