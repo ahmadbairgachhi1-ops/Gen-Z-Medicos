@@ -5,10 +5,10 @@ from pypdf import PdfWriter
 # --- PAGE CONFIGURATION ---
 st.set_page_config(page_title="RGUHS B.Pharm PYQs", page_icon="🇮🇳", layout="centered")
 
-# --- FIXED IMAGE BACKGROUND & STYLE (CSS) ---
-# Isme aapke GitHub ka direct raw link use kiya hai taaki flag image 100% load ho
-flag_theme_css = """
+# --- TRI-COLOR BOXES & BUTTON STYLE (CSS) ---
+tricolor_theme_css = """
 <style>
+/* 1. Flag Background */
 [data-testid="stAppViewContainer"] {
     background-image: url("https://raw.githubusercontent.com/ahmadbairgachhi1-ops/Gen-Z-Medicos/main/72280_2.jpg");
     background-size: cover;
@@ -21,24 +21,61 @@ flag_theme_css = """
     background-color: rgba(0,0,0,0);
 }
 
-/* Text styles for clean and bold layout over the flag background */
+/* Text styles over the background */
 h1, h2, h3, p, span, label, div {
     color: #000000 !important; 
     font-weight: bold !important;
     text-shadow: 1px 1px 2px #FFFFFF; 
 }
 
-/* Navy Blue Button styled professionally */
-.stButton>button {
-    background-color: #000080 !important;
-    color: #ffffff !important;
+/* 2. Saffron Color for Semester Selection Box (1st Box) */
+div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {
+    background-color: #FF9933 !important; /* Saffron */
+    border: 2px solid #FF9933 !important;
+    color: #000000 !important;
     border-radius: 6px;
-    border: 1px solid #000080;
-    font-weight: bold;
+}
+
+/* 3. White Color for Subject Selection Box (2nd Box) */
+div[data-testid="stMultiSelect"]:nth-of-type(1) div[data-baseweb="select"] > div {
+    background-color: #FFFFFF !important; /* Pure White */
+    border: 2px solid #E0E0E0 !important;
+    color: #000000 !important;
+    border-radius: 6px;
+}
+
+/* 4. Green Color for Year Selection Box (3rd Box) */
+div[data-testid="stMultiSelect"]:nth-of-type(2) div[data-baseweb="select"] > div {
+    background-color: #138808 !important; /* India Green */
+    border: 2px solid #138808 !important;
+    color: #FFFFFF !important; /* White text for readability over green */
+    border-radius: 6px;
+}
+/* Year box ke andar ke selected items ka text color fix karne ke liye */
+div[data-testid="stMultiSelect"]:nth-of-type(2) span {
+    color: #000000 !important;
+}
+
+# --- 5. ROUND WHITE BUTTON WITH NAVY BLUE BORDER & TEXT ---
+.stButton>button {
+    background-color: #FFFFFF !important; /* Round White Button */
+    color: #000080 !important; /* Navy Blue Text like Ashok Chakra */
+    border-radius: 30px !important; /* Completely Rounded Edges */
+    border: 3px solid #000080 !important; /* Thick Navy Blue Border */
+    font-weight: bold !important;
+    padding: 10px 24px !important;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Button hover effect */
+.stButton>button:hover {
+    background-color: #000080 !important; /* Navy Blue on Hover */
+    color: #FFFFFF !important; /* White Text on Hover */
 }
 </style>
 """
-st.markdown(flag_theme_css, unsafe_allow_html=True)
+st.markdown(tricolor_theme_css, unsafe_allow_html=True)
 
 # --- TITLE ---
 st.title("🇮🇳 RGUHS B.Pharm PYQs")
@@ -92,17 +129,17 @@ years_list = [
     "November_2020"
 ]
 
-# --- 1. SEMESTER SELECTION ---
+# --- 1. SEMESTER SELECTION (Box 1 - Saffron) ---
 selected_semester = st.selectbox("Select Semester:", list(semester_data.keys()))
 
-# --- 2. SUBJECT SELECTION ---
+# --- 2. SUBJECT SELECTION (Box 2 - White) ---
 current_subjects = semester_data[selected_semester]
 selected_subjects = st.multiselect("Select Subjects:", current_subjects)
 
-# --- 3. YEAR SELECTION ---
+# --- 3. YEAR SELECTION (Box 3 - Green) ---
 selected_years = st.multiselect("Select Year:", years_list)
 
-# --- GENERATE PDF BUTTON ---
+# --- GENERATE PDF BUTTON (Round White) ---
 if st.button("Generate Combined PDF"):
     if "Not Available" in selected_subjects:
         st.error("Subjects for this semester are not available yet.")
@@ -110,6 +147,42 @@ if st.button("Generate Combined PDF"):
         st.error("Please select at least one Subject.")
     elif not selected_years:
         st.error("Please select at least one Year.")
+    else:
+        merger = PdfWriter()
+        found_count = 0
+        missing_files = []
+
+        # Processing Files
+        for sub in selected_subjects:
+            for yr in selected_years:
+                filename = f"{sub}_{yr}.pdf"
+                
+                if os.path.exists(filename):
+                    merger.append(filename)
+                    found_count += 1
+                else:
+                    missing_files.append(filename)
+        
+        # Download Section
+        if found_count > 0:
+            output_filename = "Combined_Papers.pdf"
+            merger.write(output_filename)
+            merger.close()
+            
+            with open(output_filename, "rb") as f:
+                st.success(f"Success! {found_count} papers merged perfectly.")
+                st.download_button(
+                    label="Download Combined PDF",
+                    data=f,
+                    file_name="RGUHS_Combined_Papers.pdf",
+                    mime="application/pdf"
+                )
+            
+            if missing_files:
+                st.warning(f"Note: The following files were not found: {missing_files}")
+        else:
+            st.error("No matching files found in the database.")
+            st.info("Ensure filenames match format: Subject_Month_Year.pdf")
     else:
         merger = PdfWriter()
         found_count = 0
