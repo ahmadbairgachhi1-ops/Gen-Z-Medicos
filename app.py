@@ -28,66 +28,60 @@ h1, h2, h3, p, span, label, div {
     text-shadow: 1px 1px 2px #FFFFFF; 
 }
 
-/* 2. FIRST BOX (Semester Selectbox) -> SAFFRON */
+/* 2. TAGS COLOR KO FIX KARNA (RED HATA KAR NAVY BLUE KARNA) */
+span[data-baseweb="tag"] {
+    background-color: #000080 !important; /* Ashok Chakra Navy Blue */
+    color: #FFFFFF !important;
+    border: 1px solid #000080 !important;
+}
+span[data-baseweb="tag"] span {
+    color: #FFFFFF !important;
+}
+span[data-baseweb="tag"] svg {
+    fill: #FFFFFF !important; /* Close (x) icon ko white karna */
+}
+
+/* 3. SEMESTER BOX (SAFFRON / KESARIYA) */
 div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {
-    background-color: #FF9933 !important; /* Saffron */
+    background-color: #FF9933 !important; 
     border: 2px solid #FF9933 !important;
     color: #000000 !important;
     border-radius: 6px;
 }
 
-# --- 3. MULTISELECT BOXES GENERAL STYLE ---
-/* Selected items inside ALL boxes (Navy Blue like Ashok Chakra) */
-div[data-testid="stMultiSelect"] span[data-baseweb="tag"] {
-    background-color: #000080 !important; 
-    color: #FFFFFF !important;
-}
-div[data-testid="stMultiSelect"] span[data-baseweb="tag"] span {
-    color: #FFFFFF !important;
-}
-
-/* 4. SECOND BOX (Subject Container) -> WHITE */
-div[data-testid="stMultiSelect"]:nth-of-type(1) {
-    background-color: rgba(255, 255, 255, 0.95) !important; /* Pure White Box */
-    border-radius: 8px;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #E0E0E0;
-}
-div[data-testid="stMultiSelect"]:nth-of-type(1) div[data-baseweb="select"] > div {
+/* 4. SUBJECT BOX (WHITE / SAFED) - Targeted safely */
+div:has(> .subject-marker) + div div[data-baseweb="select"] > div,
+div[data-testid="stVerticalBlock"] > div:nth-child(6) div[data-baseweb="select"] > div {
     background-color: #FFFFFF !important;
+    border: 2px solid #E0E0E0 !important;
+    border-radius: 6px;
 }
 
-/* 5. THIRD BOX (Year Container) -> FIXED INDIAN FLAG GREEN */
-/* Pukka aur sateek CSS rasta specifically 3rd box ke liye */
-div[data-testid="stForm"] div[data-testid="stMultiSelect"]:nth-of-type(2),
-div[data-testid="stAppViewContainer"] div[data-testid="stMultiSelect"]:nth-of-type(2),
-.stMultiSelect:nth-child(3),
-div[data-testid="stMultiSelect"] + div[data-testid="stMultiSelect"] {
-    background-color: #138808 !important; /* Pure India Green */
-    border-radius: 8px;
-    padding: 12px;
-    border: 1px solid #138808;
+/* 5. YEAR BOX (GREEN / HARA) - Targeted safely */
+div:has(> .year-marker) + div div[data-baseweb="select"] > div,
+div[data-testid="stVerticalBlock"] > div:nth-child(8) div[data-baseweb="select"] > div {
+    background-color: #138808 !important; /* Pure Indian Green */
+    border: 2px solid #0E6B06 !important;
+    border-radius: 6px;
 }
-/* Year box ke andar wale select area ko bhi green ka touch dena */
-div[data-testid="stMultiSelect"]:nth-of-type(2) div[data-baseweb="select"] > div {
-    background-color: rgba(255, 255, 255, 0.2) !important;
-    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+/* Green box ke andar ka text white karna taki saaf dikhe */
+div:has(> .year-marker) + div div[data-baseweb="select"],
+div[data-testid="stVerticalBlock"] > div:nth-child(8) div[data-baseweb="select"] {
+    color: #FFFFFF !important;
 }
 
 /* 6. ROUND WHITE BUTTON WITH NAVY BLUE BORDER */
 .stButton>button {
     background-color: #FFFFFF !important; 
     color: #000080 !important; /* Navy Blue text */
-    border-radius: 30px !important; /* Completely Rounded */
-    border: 3px solid #000080 !important; /* Ashok Chakra Blue Border */
+    border-radius: 30px !important; /* Gol Button */
+    border: 3px solid #000080 !important; 
     font-weight: bold !important;
     padding: 12px 32px !important;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
 }
 
-/* Button hover effect */
 .stButton>button:hover {
     background-color: #000080 !important; 
     color: #FFFFFF !important; 
@@ -152,10 +146,12 @@ years_list = [
 selected_semester = st.selectbox("Select Semester:", list(semester_data.keys()))
 
 # --- 2. SUBJECT SELECTION (White) ---
+st.markdown('<div class="subject-marker" style="display:none;"></div>', unsafe_allow_html=True)
 current_subjects = semester_data[selected_semester]
 selected_subjects = st.multiselect("Select Subjects:", current_subjects)
 
 # --- 3. YEAR SELECTION (Green) ---
+st.markdown('<div class="year-marker" style="display:none;"></div>', unsafe_allow_html=True)
 selected_years = st.multiselect("Select Year:", years_list)
 
 # --- GENERATE PDF BUTTON ---
