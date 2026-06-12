@@ -28,7 +28,7 @@ h1, h2, h3, p, span, label, div {
     text-shadow: 1px 1px 2px #FFFFFF; 
 }
 
-/* 2. TAGS COLOR KO FIX KARNA (RED HATA KAR NAVY BLUE KARNA) */
+/* 2. GLOBAL TAGS COLOR (SUBJECT BOX KE LIYE NAVY BLUE) */
 span[data-baseweb="tag"] {
     background-color: #000080 !important; /* Ashok Chakra Navy Blue */
     color: #FFFFFF !important;
@@ -38,7 +38,7 @@ span[data-baseweb="tag"] span {
     color: #FFFFFF !important;
 }
 span[data-baseweb="tag"] svg {
-    fill: #FFFFFF !important; /* Close (x) icon ko white karna */
+    fill: #FFFFFF !important; 
 }
 
 /* 3. SEMESTER BOX (SAFFRON / KESARIYA) */
@@ -49,7 +49,7 @@ div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {
     border-radius: 6px;
 }
 
-/* 4. SUBJECT BOX (WHITE / SAFED) - Targeted safely */
+/* 4. SUBJECT BOX (WHITE / SAFED) */
 div:has(> .subject-marker) + div div[data-baseweb="select"] > div,
 div[data-testid="stVerticalBlock"] > div:nth-child(6) div[data-baseweb="select"] > div {
     background-color: #FFFFFF !important;
@@ -57,20 +57,26 @@ div[data-testid="stVerticalBlock"] > div:nth-child(6) div[data-baseweb="select"]
     border-radius: 6px;
 }
 
-/* 5. YEAR BOX (GREEN / HARA) - Targeted safely */
+/* 5. YEAR BOX (GREEN / HARA) */
 div:has(> .year-marker) + div div[data-baseweb="select"] > div,
 div[data-testid="stVerticalBlock"] > div:nth-child(8) div[data-baseweb="select"] > div {
     background-color: #138808 !important; /* Pure Indian Green */
     border: 2px solid #0E6B06 !important;
     border-radius: 6px;
 }
-/* Green box ke andar ka text white karna taki saaf dikhe */
 div:has(> .year-marker) + div div[data-baseweb="select"],
 div[data-testid="stVerticalBlock"] > div:nth-child(8) div[data-baseweb="select"] {
     color: #FFFFFF !important;
 }
 
-/* 6. ROUND WHITE BUTTON WITH NAVY BLUE BORDER */
+/* 🔴 6. NAYA ADDITION: YEAR BOX KE TAGS KO DARK GREEN KARNA 🔴 */
+div:has(> .year-marker) + div span[data-baseweb="tag"],
+div[data-testid="stVerticalBlock"] > div:nth-child(8) span[data-baseweb="tag"] {
+    background-color: #0A5504 !important; /* Dark Green taaki saaf dikhe */
+    border: 1px solid #FFFFFF !important; /* White Border taaki mix na ho */
+}
+
+/* 7. ROUND WHITE BUTTON WITH NAVY BLUE BORDER */
 .stButton>button {
     background-color: #FFFFFF !important; 
     color: #000080 !important; /* Navy Blue text */
