@@ -5,12 +5,12 @@ from pypdf import PdfWriter
 # --- PAGE CONFIGURATION ---
 st.set_page_config(page_title="RGUHS B.Pharm PYQs", page_icon="🇮🇳", layout="centered")
 
-# --- INDIAN FLAG BACKGROUND & STYLE (CSS) ---
-# Is code me aapki bheji gayi flag image (72280.jpg) ka online link upyog kiya gaya hai
+# --- LOCAL GITHUB IMAGE BACKGROUND & STYLE (CSS) ---
+# Yahan background me aapki upload ki hui "72280_2.jpg" file ko seedhe use kiya gaya hai
 flag_theme_css = """
 <style>
 [data-testid="stAppViewContainer"] {
-    background-image: url("https://www.123freevectors.com/wp-content/original/210811-indian-flag-low-poly-background.jpg");
+    background-image: url("raw/main/72280_2.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -21,14 +21,14 @@ flag_theme_css = """
     background-color: rgba(0,0,0,0);
 }
 
-/* Text style taaki tirange ke upar likhai bilkul saaf aur bold dikhe */
+/* Text styles for clean and bold layout */
 h1, h2, h3, p, span, label, div {
-    color: #000000 !important; /* Bold Black Text */
+    color: #000000 !important; 
     font-weight: bold !important;
-    text-shadow: 1px 1px 2px #FFFFFF; /* White shadow taaki dark areas me bhi dikhe */
+    text-shadow: 1px 1px 2px #FFFFFF; 
 }
 
-/* Button code - Navy Blue color jaise Ashok Chakra ka hota hai */
+/* Navy Blue Button */
 .stButton>button {
     background-color: #000080 !important;
     color: #ffffff !important;
