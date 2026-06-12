@@ -97,7 +97,7 @@ div[data-testid="stVerticalBlock"] > div:nth-child(8) span[data-baseweb="tag"] {
 st.markdown(tricolor_theme_css, unsafe_allow_html=True)
 
 # --- TITLE ---
-st.title("🇮🇳 RGUHS B.Pharm PYQs")
+st.title(" RGUHS B.Pharm PYQs")
 st.write("Select your Semester, Subjects, and Year to download the combined PDF.")
 
 # --- DATA: SEMESTER & SUBJECTS MAPPING ---
