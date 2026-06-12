@@ -3,51 +3,45 @@ import os
 from pypdf import PdfWriter
 
 # --- PAGE CONFIGURATION ---
-st.set_page_config(page_title="RGUHS B.Pharm PYQs 🐾", page_icon="🐱", layout="centered")
+st.set_page_config(page_title="RGUHS B.Pharm PYQs", page_icon="🇮🇳", layout="centered")
 
-# --- CLEAN & PREMIUM CAT THEME CSS ---
-premium_cat_css = """
+# --- INDIAN FLAG BACKGROUND & STYLE (CSS) ---
+# Is code me aapki bheji gayi flag image (72280.jpg) ka online link upyog kiya gaya hai
+flag_theme_css = """
 <style>
-/* Soft off-white background for an elegant look */
 [data-testid="stAppViewContainer"] {
-    background-color: #fcfbfa; 
+    background-image: url("https://www.123freevectors.com/wp-content/original/210811-indian-flag-low-poly-background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
-/* Dark Charcoal color for readable and professional text */
+[data-testid="stHeader"] {
+    background-color: rgba(0,0,0,0);
+}
+
+/* Text style taaki tirange ke upar likhai bilkul saaf aur bold dikhe */
 h1, h2, h3, p, span, label, div {
-    color: #2c2c2c !important; 
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #000000 !important; /* Bold Black Text */
+    font-weight: bold !important;
+    text-shadow: 1px 1px 2px #FFFFFF; /* White shadow taaki dark areas me bhi dikhe */
 }
 
-/* Premium Charcoal and Gold Button */
+/* Button code - Navy Blue color jaise Ashok Chakra ka hota hai */
 .stButton>button {
-    background-color: #2c2c2c !important;
+    background-color: #000080 !important;
     color: #ffffff !important;
-    border-radius: 8px; /* Clean rectangular rounded edges */
-    border: 1px solid #2c2c2c;
-    padding: 10px 24px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-/* Button hover effect */
-.stButton>button:hover {
-    background-color: #d4af37 !important; /* Elegant Gold on hover */
-    border-color: #d4af37;
-    color: #2c2c2c !important;
-}
-
-/* Clean input boxes */
-.stMultiSelect div div {
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    border: 1px solid #000080;
+    font-weight: bold;
 }
 </style>
 """
-st.markdown(premium_cat_css, unsafe_allow_html=True)
+st.markdown(flag_theme_css, unsafe_allow_html=True)
 
 # --- TITLE ---
-st.title("🐱 RGUHS B.Pharm PYQs 🐾")
+st.title("🇮🇳 RGUHS B.Pharm PYQs")
 st.write("Select your Semester, Subjects, and Year to download the combined PDF.")
 
 # --- DATA: SEMESTER & SUBJECTS MAPPING ---
@@ -109,13 +103,13 @@ selected_subjects = st.multiselect("Select Subjects:", current_subjects)
 selected_years = st.multiselect("Select Year:", years_list)
 
 # --- GENERATE PDF BUTTON ---
-if st.button("🐾 Generate Combined PDF"):
+if st.button("Generate Combined PDF"):
     if "Not Available" in selected_subjects:
-        st.error("Subjects for this semester are not available yet. 🐾")
+        st.error("Subjects for this semester are not available yet.")
     elif not selected_subjects:
-        st.error("Please select at least one Subject. 🐱")
+        st.error("Please select at least one Subject.")
     elif not selected_years:
-        st.error("Please select at least one Year. 🐱")
+        st.error("Please select at least one Year.")
     else:
         merger = PdfWriter()
         found_count = 0
@@ -139,9 +133,9 @@ if st.button("🐾 Generate Combined PDF"):
             merger.close()
             
             with open(output_filename, "rb") as f:
-                st.success(f"Success! {found_count} papers merged perfectly. 🐾")
+                st.success(f"Success! {found_count} papers merged perfectly.")
                 st.download_button(
-                    label="📥 Download Combined PDF",
+                    label="Download Combined PDF",
                     data=f,
                     file_name="RGUHS_Combined_Papers.pdf",
                     mime="application/pdf"
@@ -150,6 +144,5 @@ if st.button("🐾 Generate Combined PDF"):
             if missing_files:
                 st.warning(f"Note: The following files were not found: {missing_files}")
         else:
-            st.error("No matching files found in the database. 🐾")
+            st.error("No matching files found in the database.")
             st.info("Ensure filenames match format: Subject_Month_Year.pdf")
-
