@@ -183,39 +183,3 @@ if st.button("Generate Combined PDF"):
         else:
             st.error("No matching files found in the database.")
             st.info("Ensure filenames match format: Subject_Month_Year.pdf")
-    else:
-        merger = PdfWriter()
-        found_count = 0
-        missing_files = []
-
-        # Processing Files
-        for sub in selected_subjects:
-            for yr in selected_years:
-                filename = f"{sub}_{yr}.pdf"
-                
-                if os.path.exists(filename):
-                    merger.append(filename)
-                    found_count += 1
-                else:
-                    missing_files.append(filename)
-        
-        # Download Section
-        if found_count > 0:
-            output_filename = "Combined_Papers.pdf"
-            merger.write(output_filename)
-            merger.close()
-            
-            with open(output_filename, "rb") as f:
-                st.success(f"Success! {found_count} papers merged perfectly.")
-                st.download_button(
-                    label="Download Combined PDF",
-                    data=f,
-                    file_name="RGUHS_Combined_Papers.pdf",
-                    mime="application/pdf"
-                )
-            
-            if missing_files:
-                st.warning(f"Note: The following files were not found: {missing_files}")
-        else:
-            st.error("No matching files found in the database.")
-            st.info("Ensure filenames match format: Subject_Month_Year.pdf")
